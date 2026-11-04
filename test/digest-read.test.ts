@@ -20,13 +20,14 @@ describe('readNight', () => {
     expect(refresh).toMatchObject({
       runs: 4,
       retries: 3,
+      fails: 0,
       lastStatus: 'ok',
       lastError: 'upstream 503',
       firstAt: '2026-10-29T01:30:00+01:00',
       lastAt: '2026-10-29T01:37:00+01:00',
     });
 
-    expect(n.rows.find((r) => r.job === 'notes/backup')).toMatchObject({ lastStatus: 'fail', lastError: 'quota exceeded' });
+    expect(n.rows.find((r) => r.job === 'notes/backup')).toMatchObject({ lastStatus: 'fail', fails: 1, lastError: 'quota exceeded' });
     expect(n.rows.find((r) => r.job === 'digest/render')!.owner).toBeNull();
     expect(n.rows.find((r) => r.job === 'lane/sync')).toMatchObject({ runs: 8, retries: 1 });
   });

@@ -51,6 +51,7 @@ export const readNight: ReadNight = (runsDir, night) => {
         owner: line.owner,
         runs: 1,
         retries: line.status === 'retry' ? 1 : 0,
+        fails: line.status === 'fail' ? 1 : 0,
         lastStatus: line.status,
         lastError: line.error ?? null,
         firstAt: line.at,
@@ -61,6 +62,7 @@ export const readNight: ReadNight = (runsDir, night) => {
     // Lines are in log order, so the latest line wins for status, owner and time.
     row.runs++;
     if (line.status === 'retry') row.retries++;
+    if (line.status === 'fail') row.fails++;
     row.lastStatus = line.status;
     row.lastAt = line.at;
     row.owner = line.owner ?? row.owner;
